@@ -6,6 +6,7 @@ import Palette from "./Pages/Palette";
 import seedColors from "./helpers/seedColors";
 import { generatePalette } from "./helpers/colorHelpers";
 import SingleColorPalette from "./Pages/SingleColorPalette";
+import PaletteForm from "./Pages/PaletteForm";
 
 const App = () => {
 	const findPalette = id => {
@@ -21,6 +22,7 @@ const App = () => {
 				path="/"
 				render={routeProps => <Home pallets={seedColors} {...routeProps} />}
 			/>
+			<Route exact path="/palette/new" render={() => <PaletteForm />} />
 			<Route
 				exact
 				path="/palette/:id"
@@ -31,6 +33,7 @@ const App = () => {
 				)}
 			/>
 			<Route
+				exact
 				path="/palette/:paletteId/:colorId"
 				render={routeProps => (
 					<SingleColorPalette
