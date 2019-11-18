@@ -15,9 +15,9 @@ import Button from "@material-ui/core/Button";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 
 import DraggableBox from "../../Components/DraggableBox";
+import { withRouter } from "react-router-dom";
 
 const drawerWidth = 400;
-
 const styles = makeStyles(theme => ({
 	root: {
 		display: "flex",
@@ -75,12 +75,13 @@ const styles = makeStyles(theme => ({
 	},
 }));
 
-const PaletteForm = () => {
+const PaletteForm = ({ savePalette, history }) => {
 	const classes = styles();
 	const [open, setOpen] = useState(true);
 	const [currentColor, setCurrentColor] = useState("teal");
 	const [colors, setColors] = useState([]);
 	const [colorName, setColorName] = useState("");
+	const [newInputPaletteName, setNewInputPaletteName] = useState("");
 
 	const handleDrawerOpen = () => {
 		setOpen(true);
@@ -104,6 +105,22 @@ const PaletteForm = () => {
 		setColorName(target.value);
 	};
 
+	const handleInputChange = ({ target }) => {
+		setNewInputPaletteName(target.value);
+	};
+
+	const handleSavePalette = () => {
+		console.log("newInputPaletteName:", newInputPaletteName);
+		let newName = newInputPaletteName;
+		const newPaletteName = {
+			paletteName: newName,
+			colors,
+			id: newName.toLowerCase().replace(/ /g, "-"),
+		};
+		savePalette(newPaletteName);
+		history.push("/");
+	};
+
 	useEffect(() => {
 		ValidatorForm.addValidationRule("isColorNameUnique", value => {
 			colors.every(({ name }) => name.toLowerCase() !== value.toLowerCase());
@@ -114,6 +131,7 @@ const PaletteForm = () => {
 		<div className={classes.root}>
 			<CssBaseline />
 			<AppBar
+				color="default"
 				position="fixed"
 				className={clsx(classes.appBar, {
 					[classes.appBarShift]: open,
@@ -132,6 +150,21 @@ const PaletteForm = () => {
 					<Typography variant="h6" noWrap>
 						Persistent drawer
 					</Typography>
+					<ValidatorForm onSubmit={() => handleSavePalette()}>
+						<TextValidator
+							label="Palette Name"
+							value={newInputPaletteName}
+							onChange={handleInputChange}
+							validators={["required"]}
+							errorMessages={["this field is required"]}
+						/>
+						<Button type="submit" variant="contained" color="primary">
+							Save Palette
+						</Button>
+						{/*<Button variant="contained" color="secondary">
+							Delete Palette
+						</Button>*/}
+					</ValidatorForm>
 				</Toolbar>
 			</AppBar>
 			<Drawer
@@ -194,4 +227,4 @@ const PaletteForm = () => {
 	);
 };
 
-export default PaletteForm;
+export default withRouter(PaletteForm);
