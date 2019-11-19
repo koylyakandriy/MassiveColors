@@ -13,7 +13,6 @@ const App = () => {
 
 	const findPalette = id => {
 		return palettes.find(palette => {
-			console.log("palette:", palette);
 			return palette.id === id;
 		});
 	};
@@ -32,7 +31,7 @@ const App = () => {
 			<Route
 				exact
 				path="/palette/new"
-				render={() => <PaletteForm savePalette={savePalette} />}
+				render={() => <PaletteForm savePalette={savePalette} palettes={palettes}/>}
 			/>
 			<Route
 				exact
