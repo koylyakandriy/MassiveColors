@@ -4,12 +4,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography"
+import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import Button from "@material-ui/core/Button";
-import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import { Link, withRouter } from "react-router-dom";
+
+import PaletteForm from "../PaletteForm";
 
 const drawerWidth = 400;
 
@@ -19,7 +20,19 @@ const styles = makeStyles(theme => ({
 			easing: theme.transitions.easing.sharp,
 			duration: theme.transitions.duration.leavingScreen,
 		}),
+		flexDirection: "row",
+		justifyContent: "space-between",
+		height: "64px",
+		alignItems: "center",
 	},
+
+	toolBar: {
+		flexDirection: "row",
+		justifyContent: "space-between",
+		alignItems: "center",
+		width: "100%",
+	},
+
 	appBarShift: {
 		width: `calc(100% - ${drawerWidth}px)`,
 		marginLeft: drawerWidth,
@@ -34,32 +47,29 @@ const styles = makeStyles(theme => ({
 	hide: {
 		display: "none",
 	},
+	navBtn: {
+		marginRight: "1rem",
+	},
+	button: {
+		margin: "0 0.5rem",
+	},
+	link: {
+		textDecoration: "none",
+	},
 }));
 
-const PaletteFormNav = ({
-	savePalette,
-	palettes,
-	history,
-	handleDrawerOpen,
-	open,
-}) => {
-	const classes = styles();
-	const [colors, setColors] = useState(palettes[0].colors);
-	const [newInputPaletteName, setNewInputPaletteName] = useState("");
+const PaletteFormNav = ({ savePalette, palettes, handleDrawerOpen, open }) => {
+	const [colors] = useState(palettes[0].colors);
+	const [formShowing, setFormShowing] = useState(false);
 
-	const handleSavePalette = () => {
-		let newName = newInputPaletteName;
-		const newPaletteName = {
-			paletteName: newName,
-			colors,
-			id: newName.toLowerCase().replace(/ /g, "-"),
-		};
-		savePalette(newPaletteName);
-		history.push("/");
+	const classes = styles();
+
+	const showForm = () => {
+		setFormShowing(true);
 	};
 
-	const handleInputChange = ({ target }) => {
-		setNewInputPaletteName(target.value);
+	const hideForm = () => {
+		setFormShowing(false);
 	};
 
 	return (
@@ -72,7 +82,7 @@ const PaletteFormNav = ({
 					[classes.appBarShift]: open,
 				})}
 			>
-				<Toolbar>
+				<Toolbar className={classes.toolBar}>
 					<IconButton
 						color="inherit"
 						aria-label="open drawer"
@@ -85,28 +95,37 @@ const PaletteFormNav = ({
 					<Typography variant="h6" noWrap>
 						Persistent drawer
 					</Typography>
-					<ValidatorForm onSubmit={() => handleSavePalette()}>
-						<TextValidator
-							label="Palette Name"
-							value={newInputPaletteName}
-							onChange={handleInputChange}
-							validators={["required"]}
-							errorMessages={["this field is required"]}
-						/>
-						<Button type="submit" variant="contained" color="primary">
-							Save Palette
-						</Button>
-						<Link to="/">
-							<Button variant="contained" color="secondary">
+
+					<div className={classes.navBtn}>
+						<Link to="/" className={classes.link}>
+							<Button
+								className={classes.button}
+								variant="contained"
+								color="secondary"
+							>
 								Go Back
 							</Button>
 						</Link>
-						{/*<Button variant="contained" color="secondary">
-							Delete Palette
-						</Button>*/}
-					</ValidatorForm>
+						<Button
+							className={classes.button}
+							variant="contained"
+							color="primary"
+							onClick={showForm}
+						>
+							Save
+						</Button>
+					</div>
 				</Toolbar>
 			</AppBar>
+
+			{formShowing && (
+				<PaletteForm
+					hideForm={hideForm}
+					savePalette={savePalette}
+					palettes={palettes}
+					colors={colors}
+				/>
+			)}
 		</>
 	);
 };
