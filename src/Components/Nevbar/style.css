@@ -1,5 +1,5 @@
 .Navbar {
-	font-family: Roboto;
+	font-family: Roboto, sans-serif;
 	display: flex;
 	align-items: center;
 	justify-content: flex-start;
@@ -52,4 +52,19 @@
 .select-container {
 	margin-left: auto;
 	margin-right: 1rem;
+}
+
+@media (max-width: 990px) {
+	.slider {
+		width: 250%;
+	}
+}
+
+@media (max-width: 500px) {
+	.logo {
+		display: none;
+	}
+	.slider {
+		width: 150%;
+	}
 }

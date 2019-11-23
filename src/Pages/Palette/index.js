@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import ColorBox from "../../Components/ColorBox";
 import Navbar from "../../Components/Nevbar";
-import PaletteFooter from "../../Components/PaletteFooter";
+import PaletteFooter from "../../Components/PaletteMateFooter";
 
 import "./style.css";
 

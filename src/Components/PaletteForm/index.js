@@ -7,16 +7,11 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
 import { withRouter } from "react-router-dom";
-import { withStyles } from "@material-ui/core/styles";
 import { Picker } from "emoji-mart";
 import "emoji-mart/css/emoji-mart.css";
 
-const styles = {
-	formValidator: {},
-};
-
-const PaletteForm = ({ savePalette, colors, history, classes, hideForm }) => {
-	const [open] = useState(true);
+const PaletteForm = ({ savePalette, colors, history, hideForm }) => {
+	const [stage, setStage] = useState("form");
 	const [newInputPaletteName, setNewInputPaletteName] = useState("");
 
 	useEffect(() => {
@@ -25,12 +20,13 @@ const PaletteForm = ({ savePalette, colors, history, classes, hideForm }) => {
 		});
 	});
 
-	const handleSavePalette = () => {
+	const handleSavePalette = emoji => {
 		let newName = newInputPaletteName;
 		const newPaletteName = {
 			paletteName: newName,
 			colors,
 			id: newName.toLowerCase().replace(/ /g, "-"),
+			emoji: emoji.native,
 		};
 		savePalette(newPaletteName);
 		history.push("/");
@@ -40,42 +36,51 @@ const PaletteForm = ({ savePalette, colors, history, classes, hideForm }) => {
 		setNewInputPaletteName(target.value);
 	};
 
+	const showEmojiPicker = () => {
+		setStage("emoji");
+	};
+
 	return (
-		<Dialog open={open} onClose={hideForm} aria-labelledby="form-dialog-title">
-			<DialogTitle id="form-dialog-title">Choose a Palette Name</DialogTitle>
-			<ValidatorForm
-				onSubmit={() => handleSavePalette()}
-				className={classes.formValidator}
+		<div>
+			<Dialog open={stage === "emoji"} onClose={hideForm}>
+				<DialogTitle id="form-dialog-title">Choose a Palette Emoji</DialogTitle>
+
+				<Picker title="Pick a palette emoji" onSelect={handleSavePalette} />
+			</Dialog>
+			<Dialog
+				open={stage === "form"}
+				onClose={hideForm}
+				aria-labelledby="form-dialog-title"
 			>
-				<DialogContent>
-					<DialogContentText>
-						Please enter a name for your new beautiful palette
-					</DialogContentText>
+				<ValidatorForm onSubmit={() => showEmojiPicker()}>
+					<DialogContent>
+						<DialogContentText>
+							Please enter a name for your new beautiful palette
+						</DialogContentText>
 
-					<Picker />
+						<TextValidator
+							margin="normal"
+							fullWidth
+							label="Palette Name"
+							value={newInputPaletteName}
+							onChange={handleInputChange}
+							validators={["required"]}
+							errorMessages={["this field is required"]}
+						/>
+					</DialogContent>
 
-					<TextValidator
-						margin="normal"
-						fullWidth
-						label="Palette Name"
-						value={newInputPaletteName}
-						onChange={handleInputChange}
-						validators={["required"]}
-						errorMessages={["this field is required"]}
-					/>
-				</DialogContent>
-
-				<DialogActions>
-					<Button onClick={hideForm} color="primary">
-						Cancel
-					</Button>
-					<Button type="submit" variant="contained" color="primary">
-						Save Palette
-					</Button>
-				</DialogActions>
-			</ValidatorForm>
-		</Dialog>
+					<DialogActions>
+						<Button onClick={hideForm} color="primary">
+							Cancel
+						</Button>
+						<Button type="submit" variant="contained" color="primary">
+							Save Palette
+						</Button>
+					</DialogActions>
+				</ValidatorForm>
+			</Dialog>
+		</div>
 	);
 };
 
-export default withStyles(styles)(withRouter(PaletteForm));
+export default withRouter(PaletteForm);
