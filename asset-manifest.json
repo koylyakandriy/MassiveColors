@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/MassiveColors/static/css/main.560104f4.chunk.css",
+    "main.js": "/MassiveColors/static/js/main.9f65743d.chunk.js",
+    "main.js.map": "/MassiveColors/static/js/main.9f65743d.chunk.js.map",
+    "runtime-main.js": "/MassiveColors/static/js/runtime-main.733cc7c5.js",
+    "runtime-main.js.map": "/MassiveColors/static/js/runtime-main.733cc7c5.js.map",
+    "static/css/2.292c8731.chunk.css": "/MassiveColors/static/css/2.292c8731.chunk.css",
+    "static/js/2.be2a8dfe.chunk.js": "/MassiveColors/static/js/2.be2a8dfe.chunk.js",
+    "static/js/2.be2a8dfe.chunk.js.map": "/MassiveColors/static/js/2.be2a8dfe.chunk.js.map",
+    "index.html": "/MassiveColors/index.html",
+    "precache-manifest.643776d207d736bcf43675f44896d6ae.js": "/MassiveColors/precache-manifest.643776d207d736bcf43675f44896d6ae.js",
+    "service-worker.js": "/MassiveColors/service-worker.js",
+    "static/css/2.292c8731.chunk.css.map": "/MassiveColors/static/css/2.292c8731.chunk.css.map",
+    "static/css/main.560104f4.chunk.css.map": "/MassiveColors/static/css/main.560104f4.chunk.css.map",
+    "static/media/bg.svg": "/MassiveColors/static/media/bg.22434706.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.733cc7c5.js",
+    "static/css/2.292c8731.chunk.css",
+    "static/js/2.be2a8dfe.chunk.js",
+    "static/css/main.560104f4.chunk.css",
+    "static/js/main.9f65743d.chunk.js"
+  ]
+}
